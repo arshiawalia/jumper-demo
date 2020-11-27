@@ -1,24 +1,27 @@
-
-<!DOCTYPE html>
 <head>
   <title>Jumper Demo</title>
   <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
   <script>
-       
-    Pusher.logToConsole = true;
-
     var pusher = new Pusher('ffd58499afb37a208daa', {
       cluster: 'ap2'
     });
 
     var new_msg = "";
     var msg = pusher.subscribe('my-msg');
+
     msg.bind('my-event', function(data) {
-	    new_msg += data["message"] + "<br/>"
-            document.getElementById("msg").innerHTML = new_msg
+	new_msg += data["message"] + "<br/>"
+        document.getElementById("msg").innerHTML = new_msg
     }) 
   </script>
 </head>
 <body>
-  <p id="msg">Waiting for messages</p>
+  <h2>Previous messages</h2><br/>
+
+  {% for record in records %}
+  <p>Created at: {{record['created_ts']}} &#09; Message: {{record['message']['message']}}</p>
+  {% endfor %}
+  
+  <h2>Waiting for messages</h2><br/>
+  <p id="msg"></p>
 </body>
